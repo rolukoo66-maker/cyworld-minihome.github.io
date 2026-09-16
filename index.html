@@ -483,6 +483,7 @@ const PEOPLE = {
   }
 };
 
+/* 노래 파일은 music/bgm.mp3로 넣고, 아래 제목/가수만 바꾸세요. */
 const BGM_INFO = {
   title:"화분",
   artist:"러브홀릭"
@@ -609,6 +610,7 @@ document.querySelectorAll("[data-view]").forEach(btn=>{
   });
 });
 
+/* ===== BGM ===== */
 const audio = document.getElementById("bgmAudio");
 const playBtn = document.getElementById("playBtn");
 const stopBtn = document.getElementById("stopBtn");
@@ -645,12 +647,15 @@ audio.addEventListener("loadedmetadata", ()=>{
   if(saved > 0 && saved < audio.duration) audio.currentTime = saved;
 });
 
+/* 브라우저 자동재생 제한 때문에 화면을 처음 클릭하면 음악 재생 시도 */
 async function firstPlay(){
   try{
     await audio.play();
     playBtn.textContent = "Ⅱ";
     document.removeEventListener("pointerdown", firstPlay);
-  }catch(e){}
+  }catch(e){
+    /* 브라우저가 차단하면 다음 사용자 클릭 때 다시 시도 */
+  }
 }
 document.addEventListener("pointerdown", firstPlay);
 
