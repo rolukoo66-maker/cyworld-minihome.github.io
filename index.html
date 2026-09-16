@@ -1,0 +1,660 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cyworld Mini Homepage</title>
+<style>
+:root{
+  --outer:#d6e9ef;
+  --frame:#9a9a9a;
+  --frame2:#d6d6d6;
+  --blue:#58a1c7;
+  --blue-dark:#377da2;
+  --blue-soft:#eaf6fb;
+  --orange:#ef8d42;
+  --text:#4f4f4f;
+  --muted:#9a9a9a;
+  --paper:#fff;
+}
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{
+  margin:0;
+  background:
+    radial-gradient(circle at 2px 2px,#b8d6df 1px,transparent 1.2px) 0 0/8px 8px,
+    var(--outer);
+  color:var(--text);
+  font-family:Dotum,"돋움",Arial,sans-serif;
+  font-size:12px;
+}
+button,input{font:inherit}
+button{cursor:pointer}
+.cy-wrap{
+  width:min(950px,96vw);
+  margin:34px auto;
+  padding:12px;
+  border:1px solid #8da8b3;
+  border-radius:12px;
+  background:#c6e0e8;
+  box-shadow:0 10px 28px #5c758044;
+}
+.cy-shell{
+  display:grid;
+  grid-template-columns:210px minmax(0,1fr) 92px;
+  gap:10px;
+  min-height:650px;
+  padding:18px 14px 14px;
+  background:#f8f8f8;
+  border:1px solid #8d8d8d;
+  border-radius:7px;
+  box-shadow:inset 0 0 0 4px #efefef;
+  position:relative;
+}
+.cy-shell:before{
+  content:"";
+  position:absolute;
+  inset:8px;
+  border:1px dashed #b9b9b9;
+  border-radius:4px;
+  pointer-events:none;
+}
+.left,.main,.nav{position:relative;z-index:1}
+.left{
+  padding:9px;
+  border:1px solid #c8c8c8;
+  border-radius:4px;
+  background:#fff;
+}
+.counter{
+  display:flex;
+  justify-content:center;
+  gap:6px;
+  padding:3px 0 8px;
+  font-size:9px;
+  color:#888;
+}
+.counter b{color:var(--orange)}
+.profile-photo{
+  display:block;
+  width:100%;
+  aspect-ratio:4/3;
+  object-fit:cover;
+  border:1px solid #c9c9c9;
+  background:#eee;
+}
+.profile-msg{
+  min-height:52px;
+  margin-top:8px;
+  padding:7px 4px;
+  border-top:1px dotted #b8b8b8;
+  border-bottom:1px dotted #b8b8b8;
+  line-height:1.65;
+  font-size:10px;
+}
+.profile-bottom{padding-top:9px}
+.profile-name{font-weight:bold;color:#476f83}
+.profile-eng{font-size:8px;color:#aaa;margin-top:2px}
+.ilchon-box{
+  margin-top:10px;
+  padding:6px;
+  background:#f8f8f8;
+  border:1px solid #dedede;
+  font-size:9px;
+  line-height:1.7;
+}
+.ilchon-title{color:#6f8f9f;font-weight:bold}
+.person-switch{
+  margin-top:9px;
+  display:grid;
+  gap:4px;
+}
+.person-switch button{
+  border:1px solid #c9d8df;
+  background:#f5fbfd;
+  color:#587888;
+  padding:5px 7px;
+  text-align:left;
+  font-size:9px;
+}
+.person-switch button.on{
+  background:#dff1f8;
+  color:#2f6e8d;
+  font-weight:bold;
+}
+.main{
+  min-width:0;
+  background:#fff;
+  border:1px solid #c6c6c6;
+  border-radius:4px;
+  padding:12px;
+}
+.top-title{
+  display:flex;
+  align-items:flex-end;
+  min-height:38px;
+  border-bottom:1px solid #aabfca;
+  padding:0 3px 6px;
+}
+.top-title h1{
+  margin:0;
+  color:#3f738c;
+  font-size:15px;
+  font-weight:bold;
+}
+.top-title .url{
+  margin-left:auto;
+  font-size:8px;
+  color:#9aa7ad;
+}
+.home-row{
+  display:grid;
+  grid-template-columns:1fr 175px;
+  gap:10px;
+  margin-top:10px;
+}
+.section-title{
+  color:#4a7e97;
+  font-weight:bold;
+  font-size:10px;
+  padding-bottom:4px;
+  border-bottom:1px solid #9fc1d0;
+}
+.news{
+  border-bottom:1px dotted #c9c9c9;
+  padding:5px 2px;
+  font-size:9px;
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+}
+.news span:last-child{color:#aaa}
+.miniroom{
+  height:165px;
+  position:relative;
+  overflow:hidden;
+  border:1px solid #b8c8cf;
+  background:#eef6f7;
+  margin-top:6px;
+}
+.room-wall{
+  position:absolute;inset:0 0 48px;
+  background:
+    linear-gradient(90deg,#ffffff70 1px,transparent 1px),
+    linear-gradient(#ffffff70 1px,transparent 1px),
+    #e6f1f3;
+  background-size:28px 28px;
+}
+.room-floor{
+  position:absolute;left:0;right:0;bottom:0;height:48px;
+  background:repeating-linear-gradient(10deg,#bfd4db 0 12px,#ccdee3 13px 25px);
+}
+.room-window{
+  position:absolute;left:17px;top:18px;width:74px;height:55px;
+  background:#9ccce0;border:5px solid white;box-shadow:0 0 0 1px #9bb5bf;
+}
+.room-sofa{
+  position:absolute;left:110px;bottom:43px;width:112px;height:48px;
+  background:#b9cbd2;border-radius:15px 15px 4px 4px;box-shadow:0 5px #9fb5be;
+}
+.room-plant{position:absolute;right:12px;bottom:40px;font-size:34px}
+.room-person{position:absolute;right:53px;bottom:42px;font-size:38px}
+.room-heart{position:absolute;right:20px;top:10px;color:#d993a6;font-size:17px}
+.room-label{
+  position:absolute;left:7px;bottom:5px;
+  padding:2px 4px;
+  background:#ffffffd9;border:1px solid #cad7dc;color:#8a989e;font-size:7px;
+}
+.guest-wrap{margin-top:14px}
+.guestbook{
+  border-top:1px solid #d1d1d1;
+  background:#fff;
+}
+.guest{
+  padding:9px 5px 8px;
+  border-bottom:1px dotted #bebebe;
+}
+.guest-head{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-size:9px;
+  background:#f7f7f7;
+  padding:4px 6px;
+}
+.guest-no{color:#aaa}
+.guest-name{font-weight:bold;color:#4b7890}
+.guest-date{margin-left:auto;color:#aaa;font-size:8px}
+.guest-body{padding:7px 6px 2px;font-size:10px;line-height:1.6}
+.guest-form{
+  display:grid;
+  grid-template-columns:95px 1fr 42px;
+  gap:4px;
+  margin-top:8px;
+}
+.guest-form input{
+  min-width:0;
+  border:1px solid #c7c7c7;
+  padding:5px 6px;
+  font-size:9px;
+}
+.guest-form button{
+  border:1px solid #9fbac7;
+  background:#eaf5fa;
+  color:#49758a;
+  font-size:9px;
+}
+.nav{padding-top:42px}
+.nav button{
+  width:100%;
+  border:1px solid #3f82a3;
+  border-left:none;
+  border-radius:0 5px 5px 0;
+  background:#5da6cb;
+  color:#fff;
+  padding:8px 4px;
+  margin-bottom:4px;
+  font-size:9px;
+  text-align:center;
+  box-shadow:inset 0 1px #8fc8e2;
+}
+.nav button.on{
+  background:#fff;
+  color:#34799c;
+  border-left:1px solid #fff;
+  font-weight:bold;
+  transform:translateX(-4px);
+  width:calc(100% + 4px);
+}
+.bgm{
+  margin-top:10px;
+  padding:6px;
+  border:1px solid #bfcdd3;
+  background:#fff;
+  font-size:8px;
+}
+.bgm-title{color:#4b7d95;font-weight:bold;margin-bottom:4px}
+.cd{
+  width:56px;height:56px;margin:5px auto;
+  border-radius:50%;
+  background:
+    radial-gradient(circle,#f7f7f7 0 7px,#9ab4c2 8px 10px,transparent 11px),
+    conic-gradient(#c9d6dc,#f4f6f7,#a8c2cf,#e4ebef,#b7cbd4,#f6f7f8,#c9d6dc);
+  border:1px solid #96abb5;
+}
+
+.album-cover{
+  display:block;
+  width:64px;
+  height:64px;
+  object-fit:cover;
+  margin:5px auto 6px;
+  border:1px solid #9cafb8;
+  padding:2px;
+  background:#fff;
+  box-shadow:1px 1px 0 #d4dfe4;
+}
+
+.track{
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  color:#555;font-size:8px;
+}
+.artist{color:#aaa;font-size:7px;margin-top:2px}
+.controls{display:flex;gap:2px;margin-top:5px}
+.controls button{
+  flex:1;
+  border:1px solid #b7c9d2;
+  background:#f0f7fa;
+  color:#58798a;
+  font-size:8px;
+  padding:2px;
+}
+.progress{height:3px;background:#dde8ec;margin-top:5px}
+.progress div{height:100%;width:0;background:#67a3c0}
+.acorn{
+  margin-top:8px;text-align:center;
+  color:#8b6d3d;font-size:8px;
+}
+.acorn b{font-size:13px}
+.small-help{
+  margin-top:5px;
+  color:#aaa;
+  font-size:7px;
+  line-height:1.45;
+}
+.view{display:none}.view.on{display:block}
+.footer-note{
+  text-align:center;
+  color:#8f9ca2;
+  font-size:8px;
+  margin-top:9px;
+}
+@media(max-width:760px){
+  .cy-shell{grid-template-columns:185px 1fr}
+  .nav{display:none}
+  .home-row{grid-template-columns:1fr}
+}
+@media(max-width:560px){
+  .cy-wrap{width:98vw;margin:5px auto;padding:5px}
+  .cy-shell{display:block;padding:14px 10px}
+  .left{margin-bottom:8px}
+  .main{padding:9px}
+  .profile-photo{max-height:220px}
+  .guest-form{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="cy-wrap">
+  <div class="cy-shell">
+
+    <aside class="left">
+      <div class="counter"><span>TODAY <b id="todayCount">128</b></span><span>|</span><span>TOTAL 12408</span></div>
+      <img id="profilePhoto" class="profile-photo" src="images/hanjeongwoo.webp" alt="프로필 사진">
+      <div id="profileIntro" class="profile-msg">프로필 한마디를 입력해주세요.</div>
+
+      <div class="profile-bottom">
+        <div id="profileName" class="profile-name">한정우</div>
+        <div id="profileEng" class="profile-eng">HAN JEONGWOO</div>
+
+        <div class="ilchon-box">
+          <div class="ilchon-title">♡ 일촌명</div>
+          <div id="ilchonName">[ 입력해주세요 ]</div>
+        </div>
+
+        <div class="person-switch">
+          <button data-person="hyejaehee">현재희 미니홈피</button>
+          <button data-person="leejuheon">이주헌 미니홈피</button>
+          <button data-person="hanjeongwoo" class="on">한정우 미니홈피</button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="top-title">
+        <h1 id="homeTitle">한정우의 미니홈피입니다.</h1>
+        <div class="url">http://www.cyworld.com/<span id="cyId">jeongwoo</span></div>
+      </div>
+
+      <section id="homeView" class="view on">
+        <div class="home-row">
+          <div>
+            <div class="section-title">Updated news</div>
+            <div class="news"><span>방명록을 남겨주세요 ♡</span><span>NEW</span></div>
+            <div class="news"><span id="moodLine">오늘의 기분 : 평범</span><span>♪</span></div>
+            <div class="news"><span>일촌 신청은 언제든 환영!</span><span>♥</span></div>
+
+            <div class="guest-wrap">
+              <div class="section-title">방명록</div>
+              <div id="homeGuestPreview" class="guestbook"></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="section-title">Miniroom</div>
+            <div class="miniroom">
+              <div class="room-wall"></div><div class="room-floor"></div>
+              <div class="room-window"></div><div class="room-sofa"></div>
+              <div class="room-person">🧍</div><div class="room-plant">🪴</div>
+              <div class="room-heart">♥</div><div class="room-label">WELCOME TO MY ROOM</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="guestView" class="view">
+        <div class="guest-wrap" style="margin-top:10px">
+          <div class="section-title">Guestbook</div>
+          <div id="guestbook" class="guestbook"></div>
+          <form id="guestForm" class="guest-form">
+            <input id="guestNameInput" maxlength="20" placeholder="이름 / 일촌명">
+            <input id="guestTextInput" maxlength="120" placeholder="방명록을 남겨주세요.">
+            <button type="submit">등록</button>
+          </form>
+          <div class="small-help">작성한 방명록은 이 브라우저에 저장됩니다.</div>
+        </div>
+      </section>
+
+      <div class="footer-note">★ 오늘도 방문해줘서 고마워요 :) ★</div>
+    </main>
+
+    <aside class="nav">
+      <button class="on" data-view="homeView">홈</button>
+      <button data-view="guestView">방명록</button>
+
+      <div class="bgm">
+        <div class="bgm-title">♫ BGM</div>
+        <img id="albumCover" class="album-cover" src="images/loveholic_nice_dream.jpg" alt="러브홀릭 Nice Dream 앨범 커버">
+        <div id="trackTitle" class="track">BGM을 넣어주세요</div>
+        <div id="trackArtist" class="artist">가수명을 입력해주세요</div>
+        <div class="controls">
+          <button id="playBtn" type="button">▶</button>
+          <button id="stopBtn" type="button">■</button>
+        </div>
+        <div class="progress"><div id="progressBar"></div></div>
+        <div class="acorn">🌰 도토리 <b id="acornCount">1127</b>개</div>
+        <div class="small-help">♪ 러브홀릭 - 화분 · 반복재생</div>
+      </div>
+    </aside>
+
+  </div>
+</div>
+
+<audio id="bgmAudio" src="music/loveholic_flower.mp3" loop preload="auto"></audio>
+
+<script>
+/* ==========================================================
+   ★ 여기만 수정하면 됩니다.
+   프로필 사진은 images 폴더에서 같은 파일명으로 교체하세요.
+   ========================================================== */
+const PEOPLE = {
+  hyejaehee: {
+    name:"현재희",
+    eng:"HYUN JAEHEE",
+    img:"images/hyejaehee.webp",
+    intro:"방명록 남기고 가셈",
+    ilchon:"[ 빵 ]",
+    title:"현재희의 미니홈피입니다.",
+    cyId:"jaehee",
+    mood:"오늘의 기분 : 빵 먹고 싶다",
+    acorn:133
+  },
+  leejuheon: {
+    name:"이주헌",
+    eng:"LEE JUHEON",
+    img:"images/leejuheon.webp",
+    intro:"공부하자",
+    ilchon:"[ 일촌 ]",
+    title:"이주헌의 미니홈피입니다.",
+    cyId:"juheon",
+    mood:"오늘의 기분 : ^_^",
+    acorn:127
+  },
+  hanjeongwoo: {
+    name:"한정우",
+    eng:"HAN JEONGWOO",
+    img:"images/hanjeongwoo.webp",
+    intro:"잠수",
+    ilchon:"[ 일촌 ]",
+    title:"한정우의 미니홈피입니다.",
+    cyId:"jeongwoo",
+    mood:"오늘의 기분 : Zzz",
+    acorn:127
+  }
+};
+
+const BGM_INFO = {
+  title:"화분",
+  artist:"러브홀릭"
+};
+
+const DEFAULT_GUESTS = {
+  hyejaehee:[
+    {name:"이주헌", text:"헤어졌냐?", date:"20XX.XX.XX"},
+    {name:"한정우", text:"왔다 감 ㅋㅋ 다음에 보자.", date:"20XX.XX.XX"}
+  ],
+  leejuheon:[
+    {name:"현재희", text:"다녀간다~ 방명록 남기고 감.", date:"20XX.XX.XX"},
+    {name:"한정우", text:"ㅎ2", date:"20XX.XX.XX"}
+  ],
+  hanjeongwoo:[
+    {name:"현재희", text:"ㅋㅋ", date:"20XX.XX.XX"},
+    {name:"이주헌", text:"학교 좀 나와라", date:"20XX.XX.XX"}
+  ]
+};
+
+let currentPerson = "hanjeongwoo";
+
+function setText(id, value){
+  const el = document.getElementById(id);
+  if(el) el.textContent = value;
+}
+
+function selectPerson(id){
+  currentPerson = id;
+  const p = PEOPLE[id];
+
+  document.getElementById("profilePhoto").src = p.img;
+  setText("profileName", p.name);
+  setText("profileEng", p.eng);
+  setText("profileIntro", p.intro);
+  setText("ilchonName", p.ilchon);
+  setText("homeTitle", p.title);
+  setText("cyId", p.cyId);
+  setText("moodLine", p.mood);
+  setText("acornCount", p.acorn);
+
+  document.querySelectorAll("[data-person]").forEach(btn=>{
+    btn.classList.toggle("on", btn.dataset.person === id);
+  });
+
+  renderGuests();
+}
+document.querySelectorAll("[data-person]").forEach(btn=>{
+  btn.addEventListener("click", ()=>selectPerson(btn.dataset.person));
+});
+
+function guestStorageKey(){
+  return "retro_cyworld_guest_" + currentPerson;
+}
+function loadGuests(){
+  try{
+    const saved = JSON.parse(localStorage.getItem(guestStorageKey()));
+    return Array.isArray(saved) ? saved : DEFAULT_GUESTS[currentPerson];
+  }catch(e){
+    return DEFAULT_GUESTS[currentPerson];
+  }
+}
+function saveGuests(list){
+  localStorage.setItem(guestStorageKey(), JSON.stringify(list));
+}
+function guestHTML(g, i){
+  const row = document.createElement("div");
+  row.className = "guest";
+  row.innerHTML = `
+    <div class="guest-head">
+      <span class="guest-no">No.${String(i+1).padStart(2,"0")}</span>
+      <span class="guest-name"></span>
+      <span class="guest-date"></span>
+    </div>
+    <div class="guest-body"></div>`;
+  row.querySelector(".guest-name").textContent = g.name;
+  row.querySelector(".guest-date").textContent = g.date;
+  row.querySelector(".guest-body").textContent = g.text;
+  return row;
+}
+function renderGuests(){
+  const list = loadGuests();
+
+  const full = document.getElementById("guestbook");
+  full.innerHTML = "";
+  list.forEach((g,i)=>full.appendChild(guestHTML(g,i)));
+
+  const preview = document.getElementById("homeGuestPreview");
+  preview.innerHTML = "";
+  list.slice(0,2).forEach((g,i)=>preview.appendChild(guestHTML(g,i)));
+}
+document.getElementById("guestForm").addEventListener("submit", e=>{
+  e.preventDefault();
+
+  const nameInput = document.getElementById("guestNameInput");
+  const textInput = document.getElementById("guestTextInput");
+
+  const name = nameInput.value.trim();
+  const text = textInput.value.trim();
+  if(!name || !text) return;
+
+  const d = new Date();
+  const date = `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,"0")}.${String(d.getDate()).padStart(2,"0")}`;
+
+  const list = loadGuests();
+  list.unshift({name, text, date});
+  saveGuests(list);
+
+  nameInput.value = "";
+  textInput.value = "";
+  renderGuests();
+});
+
+document.querySelectorAll("[data-view]").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    const target = btn.dataset.view;
+
+    document.querySelectorAll(".view").forEach(view=>{
+      view.classList.toggle("on", view.id === target);
+    });
+    document.querySelectorAll("[data-view]").forEach(b=>{
+      b.classList.toggle("on", b === btn);
+    });
+  });
+});
+
+const audio = document.getElementById("bgmAudio");
+const playBtn = document.getElementById("playBtn");
+const stopBtn = document.getElementById("stopBtn");
+const progressBar = document.getElementById("progressBar");
+
+setText("trackTitle", BGM_INFO.title);
+setText("trackArtist", BGM_INFO.artist);
+
+function playBGM(){
+  return audio.play()
+    .then(()=>{ playBtn.textContent="Ⅱ"; })
+    .catch(()=>{ playBtn.textContent="▶"; });
+}
+function pauseBGM(){
+  audio.pause();
+  playBtn.textContent="▶";
+}
+playBtn.addEventListener("click", ()=>{
+  audio.paused ? playBGM() : pauseBGM();
+});
+stopBtn.addEventListener("click", ()=>{
+  audio.pause();
+  audio.currentTime = 0;
+  playBtn.textContent = "▶";
+});
+audio.addEventListener("timeupdate", ()=>{
+  if(audio.duration){
+    progressBar.style.width = (audio.currentTime/audio.duration*100) + "%";
+    localStorage.setItem("retro_cyworld_bgm_time", String(audio.currentTime));
+  }
+});
+audio.addEventListener("loadedmetadata", ()=>{
+  const saved = parseFloat(localStorage.getItem("retro_cyworld_bgm_time") || "0");
+  if(saved > 0 && saved < audio.duration) audio.currentTime = saved;
+});
+
+async function firstPlay(){
+  try{
+    await audio.play();
+    playBtn.textContent = "Ⅱ";
+    document.removeEventListener("pointerdown", firstPlay);
+  }catch(e){}
+}
+document.addEventListener("pointerdown", firstPlay);
+
+selectPerson(currentPerson);
+</script>
+</body>
+</html>
